@@ -7,8 +7,10 @@ export default function ValueMapCanvas({ valueMap, settings, width }) {
     const canvas = canvasRef.current
     if (!canvas || !valueMap || valueMap.length === 0) return
 
-    const rows = valueMap.length
-    const cols = valueMap[0].length
+    // Mirror rows horizontally so value map matches the mirrored camera feed
+    const mirrored = valueMap.map((row) => [...row].reverse())
+    const rows = mirrored.length
+    const cols = mirrored[0].length
     const cellSize = width / cols
     const totalHeight = rows * cellSize
 
@@ -23,7 +25,7 @@ export default function ValueMapCanvas({ valueMap, settings, width }) {
 
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
-        const val = valueMap[r][c]
+        const val = mirrored[r][c]
         const shade = Math.round((val / settings.scale.max) * 255)
         const bg = 255 - shade
         const x = c * cellSize
@@ -80,5 +82,5 @@ export default function ValueMapCanvas({ valueMap, settings, width }) {
     }
   }, [valueMap, settings, width])
 
-  return <canvas ref={canvasRef} className="rounded-lg" style={{ transform: 'scaleX(-1)' }} />
+  return <canvas ref={canvasRef} className="rounded-lg" />
 }
