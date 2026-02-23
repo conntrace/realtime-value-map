@@ -80,5 +80,5 @@ export default function ValueMapCanvas({ valueMap, settings, width }) {
     }
   }, [valueMap, settings, width])
 
-  return <canvas ref={canvasRef} className="rounded-lg" />
+  return <canvas ref={canvasRef} className="rounded-lg" style={{ transform: 'scaleX(-1)' }} />
 }
